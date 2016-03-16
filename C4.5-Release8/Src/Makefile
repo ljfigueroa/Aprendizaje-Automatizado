@@ -119,3 +119,7 @@ all:
 
 $(trees): defns.i types.i extern.i
 $(rules): defns.i types.i extern.i
+
+.PHONY: clean
+clean:
+	@rm -f *.o c4.5 c4.5rules consult consultr xval-prep
