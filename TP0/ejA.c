@@ -5,7 +5,7 @@
 #include <unistd.h>
 
 
-/*Función de densidad puntual de la distribución normal*/
+/* Función de densidad puntual de la distribución normal */
 float pdf(float desvio, float media, double x)
 {
 	double tmp1,tmp2;
@@ -14,23 +14,26 @@ float pdf(float desvio, float media, double x)
 	return tmp2 * exp(tmp1);
 }
 
+/* Genera un número random entre [min,max) */
 double double_random_between(double min, double max) {
 	double r = drand48();
 	return min + r * (max - min);
 }
 
-/*genero inputs dentro del intervalo [media-3*desvio_estandar,
+/* Genera valores aplicando el método de Rejection Sampling usando la
+ * distribuion uniforme dentro del intervalo [media-3*desvio_estandar,
  * media+3*desvio_estandar] */
-double input(double desvio, double media)
+double generate_input(double desvio, double media)
 {
-	double inicio,fin,fppu, u,x;
-	inicio = media - desvio*3;
-	fin = media + desvio*3;
-	fppu = 1/(fin-inicio); // función de densidad puntual de la
-			       // distribución uniforme
+	double inicio_intervalo,fin_intervalo,fppu, u,x;
+	inicio_intervalo = media - desvio*3;
+	fin_intervalo = media + desvio*3;
+	/* función de densidad puntual de la distribución uniforme */
+	fppu = 1/(fin_intervalo - inicio_intervalo); 
+
 	
 	for(;;) {
-		x = double_random_between(inicio, fin);
+		x = double_random_between(inicio_intervalo, fin_intervalo);
 		u = double_random_between(0.0,1.0); 
 		if (u < pdf(desvio, media, x)/fppu) {
 			return x;
@@ -38,35 +41,43 @@ double input(double desvio, double media)
 	}
 }
 
+void generate_data(int dinputs, double desvio, double media, int n, 
+		   char* clase, double (*fun)(double,double), FILE *f)
+{
+	int i, j;
+	for (i=0; i < n; i++) {
+		for(j=0; j < dinputs; j++)
+			fprintf(f, "%lf, ",fun(desvio, media));
+		fprintf(f,"%s \n", clase);
+	}
+	return;
+}
+
 int main(int argc, char **argv)
 {
-	int n, d, i, j, clase;
-	double c, desvio, media;
-	FILE *f;
+	double c, desvio;
+	int n, dinputs, i;
+	FILE *dfile, *nfile;
+	char clase1[] = "clase1";
+	char clase2[] = "clase2";
 
-	f = fopen("test1.csv", "w");
-	scanf("%d %d %lf", &n,&d,&c);
-	desvio = c * sqrt(d);
-	srand(time(NULL));
+	dfile = fopen("ejA.data", "w");
+	nfile = fopen("ejA.names","w");
 
-	
-	media = 1.0;
-	clase = 1;
-	for (i=0; i < n/2 ;i++) {
-		for(j=0; j < d ; j++)
-			fprintf(f, "%lf, ",input(desvio, media));
-		fprintf(f,"%d \n", clase);
-	}
-	
-	media = -1.0;
-	clase = 0;
-	for (i=0; i < n/2 ;i++) {
-		for(j=0; j < d ; j++)
-			fprintf(f, "%lf, ",input(desvio, media));
-		fprintf(f,"%d \n", clase);
-	}
-	
+	scanf("%d %d %lf", &n,&dinputs,&c);
+	desvio = c * sqrt(dinputs);
 
-    	fclose(f);
+	/* Genero el .data */
+	srand48(time(NULL));
+	generate_data(dinputs, desvio, 1.0, n/2, clase1, generate_input, dfile);
+	generate_data(dinputs, desvio, -1.0, n/2, clase2, generate_input, dfile);
+    	fclose(dfile);
+
+	/* Genero el .names */
+	fprintf(nfile, "%s, %s.\n\n",clase1,clase2);
+	for (i = 0; i < dinputs; i++)
+		fprintf(nfile, "input%d: continuous.\n",i+1);
+	fclose(nfile);
+
 	return 0;
 }
