@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 	int n, dinputs, i;
 	FILE *dfile, *nfile;
 	char clase1[] = "clase1";
-	char clase2[] = "clase2";
+	char clase0[] = "clase0";
 
 	dfile = fopen("ejB.data", "w");
 	nfile = fopen("ejB.names","w");
@@ -67,11 +67,11 @@ int main(int argc, char **argv)
 	/* Genero el .data */
 	srand48(time(NULL));
 	generate_data(dinputs, desvio, 1.0, n/2, clase1, generate_input, dfile);
-	generate_data(dinputs, desvio, -1.0, n/2, clase2, generate_input, dfile);
+	generate_data(dinputs, desvio, -1.0, n/2, clase0, generate_input, dfile);
     	fclose(dfile);
 
 	/* Genero el .names */
-	fprintf(nfile, "%s, %s.\n\n",clase1,clase2);
+	fprintf(nfile, "%s, %s.\n\n",clase1,clase0);
 	for (i = 0; i < dinputs; i++)
 		fprintf(nfile, "input%d: continuous.\n",i+1);
 	fclose(nfile);
