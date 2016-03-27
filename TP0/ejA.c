@@ -20,22 +20,18 @@ double double_random_between(double min, double max) {
 	return min + r * (max - min);
 }
 
-/* Genera valores aplicando el método de Rejection Sampling usando la
- * distribuion uniforme dentro del intervalo [media-3*desvio_estandar,
- * media+3*desvio_estandar] */
+/* Genera valores aplicando el método de Rejection Sampling en el
+   intervalo [media-3*desvio_estandar, media+3*desvio_estandar] */
 double generate_input(double desvio, double media)
 {
 	double inicio_intervalo,fin_intervalo,fppu, u,x;
 	inicio_intervalo = media - desvio*3;
 	fin_intervalo = media + desvio*3;
-	/* función de densidad puntual de la distribución uniforme */
-	fppu = 1/(fin_intervalo - inicio_intervalo); 
-
 	
 	for(;;) {
 		x = double_random_between(inicio_intervalo, fin_intervalo);
 		u = double_random_between(0.0,1.0); 
-		if (u < pdf(desvio, media, x)/fppu) {
+		if (u < pdf(desvio, media, x)) {
 			return x;
 		}
 	}
