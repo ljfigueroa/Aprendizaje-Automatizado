@@ -77,9 +77,7 @@ int main()
 	point p;
   	int n, i,clase;
 	FILE *dfile, *nfile;
-	char clase1[] = "clase1";
-	char clase0[] = "clase0";
-	
+		
 	dfile = fopen("ejC.data", "w");
 	nfile = fopen("ejC.names", "w");
 
@@ -90,14 +88,13 @@ int main()
 	for (clase=0; clase < 2 ;clase++) {
 		for (i=0; i < n/2 ;i++) {
 			p = entre_curvas(clase);
-			fprintf(dfile, "%lf, %lf, %s\n", p.x, p.y,
-				clase == 0 ? clase0 : clase1);
+			fprintf(dfile, "%lf, %lf, %d\n", p.x, p.y, clase);
 		}
 	}
 	fclose(dfile);
 
 	/* Genero el .names */
-	fprintf(nfile, "clase0, clase1.\n\n");
+	fprintf(nfile, "0, 1.\n\n");
 	fprintf(nfile, "input1: continuous.\n");
 	fprintf(nfile, "input2: continuous.\n");
 	fclose(nfile);

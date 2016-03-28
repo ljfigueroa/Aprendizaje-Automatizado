@@ -38,14 +38,14 @@ double generate_input(double desvio, double media)
 }
 
 void generate_data(int dinputs, double desvio, double media, int n, 
-		   char* clase, double (*fun)(double,double), FILE *f)
+		   int clase, double (*fun)(double,double), FILE *f)
 {
 	int i, j;
 	for (i=0; i < n; i++) {
 		fprintf(f, "%lf, ",fun(desvio, media));
 		for(j=1; j < dinputs; j++) 
 			fprintf(f, "%lf, ",fun(desvio, 0));
-		fprintf(f,"%s\n", clase);
+		fprintf(f,"%d\n", clase);
 	}
 	return;
 }
@@ -55,9 +55,7 @@ int main(int argc, char **argv)
 	double c, desvio;
 	int n, dinputs, i;
 	FILE *dfile, *nfile;
-	char clase1[] = "clase1";
-	char clase0[] = "clase0";
-
+	
 	dfile = fopen("ejB.data", "w");
 	nfile = fopen("ejB.names","w");
 
@@ -66,12 +64,12 @@ int main(int argc, char **argv)
 
 	/* Genero el .data */
 	srand48(time(NULL));
-	generate_data(dinputs, desvio, 1.0, n/2, clase1, generate_input, dfile);
-	generate_data(dinputs, desvio, -1.0, n/2, clase0, generate_input, dfile);
+	generate_data(dinputs, desvio, 1.0, n/2, 1, generate_input, dfile);
+	generate_data(dinputs, desvio, -1.0, n/2, 0, generate_input, dfile);
     	fclose(dfile);
 
 	/* Genero el .names */
-	fprintf(nfile, "%s, %s.\n\n",clase1,clase0);
+	fprintf(nfile, "1, 0.\n\n");
 	for (i = 0; i < dinputs; i++)
 		fprintf(nfile, "input%d: continuous.\n",i+1);
 	fclose(nfile);
