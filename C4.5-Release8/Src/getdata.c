@@ -5,6 +5,8 @@
 /*									 */
 /*************************************************************************/
 
+#include <stdlib.h>
+#include <unistd.h>
 
 #include "defns.i"
 #include "types.i"
@@ -111,7 +113,7 @@ Description GetDescription(Df)
 	    else
 	    if ( MaxAttVal[Att] || SpecialStatus[Att] == DISCRETE )
 	    {
-		/*  Discrete value  */ 
+		/*  Discrete value  */
 
 	        if ( ! ( strcmp(name, "?") ) )
 		{

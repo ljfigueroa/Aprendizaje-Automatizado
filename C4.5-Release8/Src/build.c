@@ -55,7 +55,7 @@ extern short
 
     InitialiseTreeData()
 /*  ------------------  */
-{ 
+{
     DiscrValue v;
     Attribute a;
 
@@ -161,8 +161,8 @@ extern short
 
 Tree FormTree(Fp, Lp)
 /*   ---------  */
-    ItemNo Fp, Lp; 
-{ 
+    ItemNo Fp, Lp;
+{
     ItemNo i, Kp, Ep, Group();
     ItemCount Cases, NoBestClass, KnownCases, CountItems();
     float Factor, BestVal, Val, AvGain=0, Worth();
@@ -181,9 +181,9 @@ Tree FormTree(Fp, Lp)
 	ClassFreq[c] = 0;
     }
     ForEach(i, Fp, Lp)
-    { 
+    {
 	ClassFreq[ Class(Item[i]) ] += Weight[i];
-    } 
+    }
 
     /*  Find the most frequent class  */
 
@@ -203,17 +203,17 @@ Tree FormTree(Fp, Lp)
 	cases to divide, the tree is a leaf  */
 
     if ( NoBestClass == Cases  || Cases < 2 * MINOBJS )
-    { 
+    {
 	return Node;
-    } 
+    }
 
     Verbosity(1)
     	printf("\n%d items, total weight %.1f\n", Lp - Fp + 1, Cases);
 
     /*  For each available attribute, find the information and gain  */
 
-    ForEach(Att, 0, MaxAtt) 
-    { 
+    ForEach(Att, 0, MaxAtt)
+    {
 	Gain[Att] = -Epsilon;
 
 	if ( SpecialStatus[Att] == IGNORE ) continue;
@@ -233,11 +233,11 @@ Tree FormTree(Fp, Lp)
 	    }
 	}
 	else
-	{ 
+	{
 	    /*  continuous attribute  */
 
 	    EvalContinuousAtt(Att, Fp, Lp);
-	} 
+	}
 
 	/*  Update average gain, excluding attributes with very many values  */
 
@@ -247,7 +247,7 @@ Tree FormTree(Fp, Lp)
 	    Possible++;
 	    AvGain += Gain[Att];
 	}
-    } 
+    }
 
     /*  Find the best attribute according to the given criterion  */
 
@@ -260,23 +260,23 @@ Tree FormTree(Fp, Lp)
 	if ( AvGain < 1E6 ) printf("\taverage gain %.3f\n", AvGain);
     }
 
-    ForEach(Att, 0, MaxAtt) 
-    { 
+    ForEach(Att, 0, MaxAtt)
+    {
 	if ( Gain[Att] > -Epsilon )
-	{ 
+	{
 	    Val = Worth(Info[Att], Gain[Att], AvGain);
-	    if ( Val > BestVal ) 
-	    { 
-	        BestAtt  = Att; 
+	    if ( Val > BestVal )
+	    {
+	        BestAtt  = Att;
 	        BestVal = Val;
-	    } 
-	} 
-    } 
+	    }
+	}
+    }
 
-    /*  Decide whether to branch or not  */ 
+    /*  Decide whether to branch or not  */
 
     if ( BestAtt != None )
-    { 
+    {
 	Verbosity(1)
 	{
 	    printf("\tbest attribute %s", AttName[BestAtt]);
@@ -286,7 +286,7 @@ Tree FormTree(Fp, Lp)
 	    }
 	    printf(" inf %.3f gain %.3f val %.3f\n",
 		   Info[BestAtt], Gain[BestAtt], BestVal);
-	}	
+	}
 
 	/*  Build a node of the selected test  */
 
@@ -304,11 +304,11 @@ Tree FormTree(Fp, Lp)
 	    }
 	}
 	else
-	{ 
+	{
 	    /*  Continuous attribute  */
 
 	    ContinTest(Node, BestAtt);
-	} 
+	}
 
 	/*  Remove unknown attribute values  */
 
@@ -369,23 +369,23 @@ Tree FormTree(Fp, Lp)
 	/*  See whether we would have been no worse off with a leaf  */
 
 	if ( Node->Errors >= Cases - NoBestClass - Epsilon )
-	{ 
+	{
 	    Verbosity(1)
 		printf("Collapse tree for %d items to leaf %s\n",
 	                Lp - Fp + 1, ClassName[BestClass]);
 
 	    Node->NodeType = 0;
-	} 
+	}
     }
     else
-    { 
+    {
 	Verbosity(1)
 	    printf("\tno sensible splits  %.1f/%.1f\n",
 		   Cases, Cases - NoBestClass);
-    } 
+    }
 
-    return Node; 
-} 
+    return Node;
+}
 
 
 

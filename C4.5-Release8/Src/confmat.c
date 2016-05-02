@@ -10,7 +10,7 @@
 #include "extern.i"
 
 
-    PrintConfusionMatrix(ConfusionMat)
+void PrintConfusionMatrix(ConfusionMat)
 /*  --------------------  */
     ItemNo *ConfusionMat;
 {

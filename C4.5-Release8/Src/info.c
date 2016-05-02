@@ -66,13 +66,13 @@ float Worth(ThisInfo, ThisGain, MinGain)
     ClassNo c;
 
     ForEach(v, 0, MaxVal)
-    { 
+    {
 	ForEach(c, 0, MaxClass)
 	{
 	    Freq[v][c] = 0;
 	}
 	ValFreq[v] = 0;
-    } 
+    }
 }
 
 

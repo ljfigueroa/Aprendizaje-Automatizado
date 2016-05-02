@@ -5,6 +5,7 @@
 /*								  	 */
 /*************************************************************************/
 
+#include <stdlib.h>
 
 #include "defns.i"
 #include "types.i"
@@ -20,6 +21,7 @@ short	NTests = 0;
 FILE	*fopen();
 extern char	Fn[500];	/* file name */
 
+void PrintCondition(Condition);
 
 /*************************************************************************/
 /*								  	 */
@@ -40,7 +42,7 @@ extern char	Fn[500];	/* file name */
     strcpy(Fn, FileName);
     strcat(Fn, ".rules");
     if ( ! ( TRf = fopen(Fn, "w") ) ) Error(0, Fn, " for writing");
-    
+
     StreamOut((char *) &NRules, sizeof(RuleNo));
     StreamOut((char *) &DefaultClass, sizeof(ClassNo));
 
@@ -98,7 +100,7 @@ extern char	Fn[500];	/* file name */
     strcpy(Fn, FileName);
     strcat(Fn, ".rules");
     if ( ! ( TRf = fopen(Fn, "r") ) ) Error(0, Fn, "");
-    
+
     StreamIn((char *) &nr, sizeof(RuleNo));
     StreamIn((char *) &DefaultClass, sizeof(ClassNo));
 
@@ -430,7 +432,7 @@ Boolean SameRule(r, Cond, NConds, TargetClass)
 /*************************************************************************/
 
 
-    PrintCondition(c)
+void PrintCondition(c)
 /*  --------------  */
     Condition c;
 {

@@ -25,11 +25,11 @@ float
 /*************************************************************************/
 
 
-    EvalContinuousAtt(Att, Fp, Lp)
-/*  -----------------  */ 
+void EvalContinuousAtt(Att, Fp, Lp)
+/*  -----------------  */
     Attribute Att;
-    ItemNo Fp, Lp; 
-{ 
+    ItemNo Fp, Lp;
+{
     ItemNo i, BestI, Xp, Tries=0;
     ItemCount Items, KnownItems, LowItems, MinSplit, CountItems();
     ClassNo c;
@@ -146,7 +146,7 @@ float
     }
 
     /*  If a test on the attribute is able to make a gain,
-	set the best break point, gain and information  */ 
+	set the best break point, gain and information  */
 
     if ( BestI == None )
     {
@@ -165,7 +165,7 @@ float
 	    printf("\tcut=%.3f, inf %.3f, gain %.3f\n",
 		   Bar[Att], Info[Att], Gain[Att]);
     }
-} 
+}
 
 
 

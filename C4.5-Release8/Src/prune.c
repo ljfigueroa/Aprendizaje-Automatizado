@@ -5,6 +5,7 @@
 /*									 */
 /*************************************************************************/
 
+#include <stdlib.h>
 
 #include "defns.i"
 #include "types.i"
@@ -84,10 +85,10 @@ Boolean Prune(T)
 float EstimateErrors(T, Fp, Lp, Sh, UpdateTree)
 /*    --------------  */
     Tree T;
-    ItemNo Fp, Lp; 
+    ItemNo Fp, Lp;
     short Sh;
     Boolean UpdateTree;
-{ 
+{
     ItemNo i, Kp, Ep, Group();
     ItemCount Cases, KnownCases, *LocalClassDist, TreeErrors, LeafErrors,
 	ExtraLeafErrors, BranchErrors, CountItems(), Factor, MaxFactor, AddErrs();
@@ -101,9 +102,9 @@ float EstimateErrors(T, Fp, Lp, Sh, UpdateTree)
     LocalClassDist = (ItemCount *) calloc(MaxClass+1, sizeof(ItemCount));
 
     ForEach(i, Fp, Lp)
-    { 
+    {
 	LocalClassDist[ Class(Item[i]) ] += Weight[i];
-    } 
+    }
 
     /*  Find the most frequent class and update the tree  */
 
@@ -184,7 +185,7 @@ float EstimateErrors(T, Fp, Lp, Sh, UpdateTree)
 	    }
 	}
     }
- 
+
     AllKnown = PrevAllKnown;
 
     if ( ! UpdateTree )

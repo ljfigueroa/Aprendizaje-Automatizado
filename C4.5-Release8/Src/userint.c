@@ -23,6 +23,9 @@ extern	RangeDescRec		RangeDesc;
 
 #define Fuzz 0.01
 
+void ReadRange(Attribute, Tree);
+void ReadDiscr(Attribute, Tree);
+
 
 /*************************************************************************/
 /*									 */
@@ -31,7 +34,7 @@ extern	RangeDescRec		RangeDesc;
 /*************************************************************************/
 
 
-    CheckValue(Att, T)
+void CheckValue(Att, T)
 /*  ----------  */
     Attribute Att;
     Tree T;
@@ -51,7 +54,7 @@ extern	RangeDescRec		RangeDesc;
 }
 
 
- 
+
 /*************************************************************************/
 /*									 */
 /*	Print the range of values for attribute Att			 */
@@ -110,7 +113,7 @@ extern	char		Delimiter;
 /*************************************************************************/
 
 
-    ReadRange(Att, T)
+void ReadRange(Att, T)
 /*  ----------  */
     Attribute Att;
     Tree T;
@@ -163,7 +166,7 @@ extern	char		Delimiter;
 /*									 */
 /*************************************************************************/
 
-    ReadDiscr(Att, T)
+void ReadDiscr(Att, T)
 /*  ---------  */
     Attribute Att;
     Tree T;

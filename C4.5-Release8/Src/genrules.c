@@ -5,6 +5,7 @@
 /*								  	 */
 /*************************************************************************/
 
+#include <stdlib.h>
 
 #include "defns.i"
 #include "types.i"
@@ -54,7 +55,7 @@
 
 	printf("\nFinal rules from tree %d:\n", t);
 	PrintIndexedRules();
-	    
+
 	/*  Make sure there is enough room for the new ruleset  */
 
 	if ( t + 1 >= RuleSetSpace )
@@ -209,7 +210,7 @@ void SwapUnweighted(a, b)
     RuleNo r;
     short t, ri;
     Boolean NewRule();
-    
+
     InitialiseRules();
 
     /*  Lump together all the rules from each ruleset  */

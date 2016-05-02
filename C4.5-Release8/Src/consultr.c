@@ -5,6 +5,7 @@
 /*								   	 */
 /*************************************************************************/
 
+#include <stdlib.h>
 
 #include "defns.i"
 #include "types.i"
@@ -37,9 +38,9 @@ PR		*Rule;
 
 RuleNo		NRules = 0,
 		*RuleIndex;
- 
+
 short		RuleSpace = 0;
- 
+
 ClassNo		DefaultClass;
 
 
@@ -77,7 +78,7 @@ RuleNo BestRule()
     float cf, RuleStrength();
 
     Confidence = 0.0;
-    
+
     ForEach(r, 1, NRules)
     {
 	cf = RuleStrength(Rule[r]);
@@ -193,7 +194,7 @@ float ProbSatisfied(c)
 	    }
 	    return AddProb;
 
-    } 
+    }
     return 0.0;
 }
 
@@ -206,9 +207,9 @@ float ProbSatisfied(c)
 /*************************************************************************/
 
 
-    InterpretRuleset()
+void InterpretRuleset()
 /*  ---------------- 	 */
-{ 
+{
     char Reply;
     Attribute a;
     RuleNo r;
@@ -266,7 +267,7 @@ float ProbSatisfied(c)
 	}
     }
 }
-    
+
 
 
 /*************************************************************************/

@@ -42,7 +42,7 @@ extern Boolean	**CondSatisfiedBy,	/* [Condition][ItemNo] */
 /*************************************************************************/
 
 
-    PruneRule(Cond, NCond, TargetClass)
+void PruneRule(Cond, NCond, TargetClass)
 /*  ---------  */
     Condition Cond[];
     short NCond;
@@ -397,7 +397,7 @@ Boolean IsSubset(S1, S2, Att)
 
 Boolean Satisfies(CaseDesc, OneCond)
 /*      ---------  */
-    Description CaseDesc; 
+    Description CaseDesc;
     Condition OneCond;
 {
     DiscrValue v;

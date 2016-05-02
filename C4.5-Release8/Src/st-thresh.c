@@ -19,6 +19,8 @@ ItemNo	*ThreshErrs;	/*  ThreshErrs[i] is the no. of misclassifications if thresh
 float	*CVals;		/*  All values of a continuous attribute  */
 
 
+void ScanTree(Tree, ItemNo, ItemNo);
+
 #define	Below(v,t)	(v <= t + 1E-6)
 
 
@@ -58,7 +60,7 @@ float	*CVals;		/*  All values of a continuous attribute  */
 /*************************************************************************/
 
 
-    ScanTree(T, Fp, Lp)
+void ScanTree(T, Fp, Lp)
 /*  --------  */
     Tree T;
     ItemNo Fp, Lp;
@@ -98,7 +100,7 @@ float	*CVals;		/*  All values of a continuous attribute  */
 	    CaseDesc = Item[i];
 	    CaseClass = Class(CaseDesc);
 	    Val = CVal(CaseDesc, Att);
-		
+
 	    Class1 = Category(CaseDesc, T->Branch[1]);
 	    Class2 = Category(CaseDesc, T->Branch[2]);
 

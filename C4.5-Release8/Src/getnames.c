@@ -1,3 +1,4 @@
+
 /*************************************************************************/
 /*									 */
 /*	Get names of classes, attributes and attribute values		 */
@@ -5,6 +6,8 @@
 /*									 */
 /*************************************************************************/
 
+#include <stdlib.h>
+#include <unistd.h>
 
 #include "defns.i"
 #include "types.i"

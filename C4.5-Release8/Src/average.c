@@ -10,6 +10,7 @@
 
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #define	MAXLINE		200	/* max line length */
 #define MAXVALS		 10	/* max values to be averaged */
@@ -48,7 +49,7 @@ main()
 
 	if ( Lines )
 	{
-	    if ( i != Numbers ) exit();
+	    if ( i != Numbers ) exit(1);
 	}
 	else
 	{

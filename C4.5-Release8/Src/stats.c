@@ -10,7 +10,7 @@
 #include "types.i"
 #include "extern.i"
 
-									
+
 /*************************************************************************/
 /*									 */
 /*  Compute the additional errors if the error rate increases to the	 */

@@ -38,13 +38,13 @@
 	Middle = Fp;
 
 	for ( i = Fp ; i < Lp ; i++ )
-	{ 
+	{
 	    if ( CVal(Item[i], Att) <= Thresh )
-	    { 
+	    {
 		if ( i != Middle ) (*Exchange)(Middle, i);
-		Middle++; 
-	    } 
-	} 
+		Middle++;
+	    }
+	}
 
 	/*  Extract all values equal to the threshold  */
 
@@ -53,11 +53,11 @@
 	for ( i = Lower ; i >= Fp ; i-- )
 	{
 	    if ( CVal(Item[i], Att) == Thresh )
-	    { 
+	    {
 		if ( i != Lower ) (*Exchange)(Lower, i);
 		Lower--;
-	    } 
-	} 
+	    }
+	}
 
 	/*  Sort the lower values  */
 

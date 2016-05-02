@@ -5,6 +5,10 @@
 /*									 */
 /*************************************************************************/
 
+#include <stdlib.h>
+#include <string.h>
+
+/*modificado por pmg - 30/4/01*/
 
 #include "defns.i"
 #include "types.i"
@@ -15,7 +19,11 @@ ItemNo		*TargetClassFreq;
 Tree		*Raw;
 extern Tree	*Pruned;
 
-
+/*modificado por pmg - 30/4/01	*/
+char Fn[100];
+Attribute Att;
+FILE *predicted_output=0, *fopen();
+/*++++++++++++++++++++++++++++*/
 
 /*************************************************************************/
 /*									 */
@@ -188,7 +196,7 @@ short BestTree()
 	ClassesLeft--;
     }
 
-    cfree(ClassFreq);
+    free(ClassFreq);
 }
 
 
@@ -370,7 +378,12 @@ Tree Iterate(Window, IncExceptions)
 
     if ( CMInfo )
     {
-	ConfusionMat = (ItemNo *) calloc((MaxClass+1)*(MaxClass+1), sizeof(ItemNo));
+        /*modificado por pmg - 30/4/01*/
+        strcpy(Fn, FileName);
+	    strcat(Fn, ".prediction");
+        predicted_output=fopen(Fn,"w");
+        /*++++++++++++++++++++++++++++*/
+	    ConfusionMat = (ItemNo *) calloc((MaxClass+1)*(MaxClass+1), sizeof(ItemNo));
     }
 
     printf("\n");
@@ -405,8 +418,20 @@ Tree Iterate(Window, IncExceptions)
 	    {
 		ConfusionMat[RealClass*(MaxClass+1)+PrunedClass]++;
 	    }
+	    /*modificado por pmg - 30/4/01*/
+	    if ( CMInfo ){
+		  ForEach(Att, 0, MaxAtt){
+	        if ( SpecialStatus[Att] == DISCRETE || MaxAttVal[Att] ){
+	          fprintf(predicted_output,"%d\t",DVal(Item[i],Att));
+  	        }else if ( SpecialStatus[Att] != IGNORE  ){
+		      fprintf(predicted_output,"%f\t",CVal(Item[i],Att));
+		    }
+	      }
+	      fprintf(predicted_output,"%d\n",PrunedClass);
+		}
+	    /*++++++++++++++++++++++++++++*/
 	}
-    
+
 	if ( TRIALS > 1 )
 	{
 	    printf("%4d", t);
@@ -419,8 +444,12 @@ Tree Iterate(Window, IncExceptions)
 	       ( t == Saved ? "   <<" : "" ));
     }
 
+
     if ( CMInfo )
     {
+        /*modificado por pmg - 30/4/018*/
+        fclose(predicted_output);
+        /*++++++++++++++++++++++++++++*/
 	PrintConfusionMatrix(ConfusionMat);
 	free(ConfusionMat);
     }

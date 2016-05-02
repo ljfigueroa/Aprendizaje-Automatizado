@@ -34,7 +34,7 @@ RuleNo	*ClassRules;	/* list of all rules for current target class */
 
 ClassNo	FocusClass;
 
-
+void CoverClass();
 
 /*************************************************************************/
 /*									 */
@@ -161,7 +161,7 @@ ClassNo	FocusClass;
 /*************************************************************************/
 
 
-    CoverClass()
+void CoverClass()
 /*  ----------  */
 {
     RuleNo r, RuleCount=0;
@@ -211,7 +211,7 @@ ClassNo	FocusClass;
 }
 
 
- 
+
 /*************************************************************************/
 /*									 */
 /*    Try all combinations of rules to find best value			 */
@@ -307,7 +307,7 @@ ClassNo	FocusClass;
 		{
 		    AddRule(r);
 		}
-		
+
 		Changed = true;
 	    }
 	}
@@ -393,7 +393,7 @@ ClassNo	FocusClass;
 	    }
 	}
     }
-    
+
     /*  Add or drop rule with greatest reduction in coding cost  */
 
     while ( true )
@@ -932,5 +932,5 @@ float CondBits(C)
 	case BrSubset:		/* subset test on discrete attribute  */
 
 	    return AttTestBits/REDUNDANCY + MaxAttVal[a];
-    } 
+    }
 }
