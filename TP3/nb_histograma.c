@@ -1,7 +1,6 @@
 /*
 nb_n.c :
-        - Clasificador Naive Bayes usando la aproximacion de funciones normales
-          para features continuos.
+        - Clasificador Naive Bayes usando histogramas.
         - Formato de datos: c4.5.
         - La clase a predecir tiene que ser un numero comenzando de 0: por
           ejemplo, para 3 clases, las clases deben ser 0,1,2.
@@ -13,6 +12,7 @@ PMG - Ultima revision: 20/06/2001
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 #define LOW 1.e-14               /*Minimo valor posible para una probabilidad*/
 #define PI  3.141592653
@@ -44,14 +44,17 @@ int CONTROL;        /* Nivel de verbosity:
 
 int N_TOTAL;        /* Número de patrones a usar durante el entrenamiento */
 
+int N_BINS;         /* Número de bins por histogramas */
+
 /* Matrices globales  DECLARAR ACA LAS MATRICES NECESARIAS */
 
 double **data;       /* Train data */
 double **test;       /* Test  data */
 int    *pred;        /* Clases predichas */
-double **media;      /* Tabla con la media de cada feature por clase */
-double **varianza;
-int    *size;
+double *vmin;        /* Mínimo valor de cada atributo */
+double *vmax;        /* Máximo valor de cada atributo */
+int    *size;        /* Cantidad de elementos por clase */
+double ***pbin;      /* Probabilidad de cada bin */
 
 int *seq;            /* Sequencia de presentacion de los patrones*/
 
@@ -91,18 +94,19 @@ int define_matrix(){
   }
 
 /* ALLOCAR ESPACIO PARA LAS MATRICES DEL ALGORITMO */
-  media = (double **)calloc(N_Class, sizeof(double *));
-  if(media == NULL) return 1;
-  for(i = 0; i < N_Class; i++) {
-    media[i] = (double*)calloc(N_IN, sizeof(double));
-    if(media[i]==NULL) return 1;
-  }
+  vmin = (double *)calloc(N_IN, sizeof(double));
+  vmax = (double *)calloc(N_IN, sizeof(double));
+  if(vmin == NULL || vmax == NULL) return 1;
 
-  varianza = (double **)calloc(N_Class, sizeof(double *));
-  if(varianza == NULL) return 1;
+  pbin = (double ***)calloc(N_Class, sizeof(double));
+  if(pbin == NULL) return 1;
   for(i = 0; i < N_Class; i++) {
-    varianza[i] = (double*)calloc(N_IN, sizeof(double));
-    if(varianza[i]==NULL) return 1;
+    pbin[i] = (double**)calloc(N_IN, sizeof(double*));
+    if(pbin[i]==NULL) return 1;
+    for(j = 0; j < N_IN; j++) {
+        pbin[i][j] = (double*)calloc(N_BINS, sizeof(double));
+        if(pbin[i][j]==NULL) return 1;
+    }
   }
 
   size=(int *)calloc(N_Class,sizeof(int));
@@ -143,6 +147,9 @@ int arquitec(char *filename){
   /* Nivel de verbosity */
   fscanf(b,"%d",&CONTROL);
 
+  /* Cantidad de bins por histogramas */
+  fscanf(b,"%d",&N_BINS);
+
   fclose(b);
 
 
@@ -165,6 +172,7 @@ int arquitec(char *filename){
   printf("\nCantidad de patrones de validacion: %d",PTOT-PR);
   printf("\nCantidad de patrones de test: %d",PTEST);
   printf("\nSemilla para la funcion rand(): %d",SEED);
+  printf("\nCantidad de bins por histogramas: %d",N_BINS);
 
   return 0;
 }
@@ -258,25 +266,16 @@ void shuffle(int hasta){
   if(CONTROL>3) {printf("End shuffle\n");fflush(NULL);}
 }
 
-double dp_nomal(double x, double m, double v)
-{
-    double tmp1 = 1 / sqrt(2 * M_PI * v);
-    double tmp2 = exp( -pow(x - m, 2) / (2 * v) );
-    return tmp1 * tmp2;
-}
 /* ----------------------------------------------------------------------------
 prob:
     Calcula la probabilidad de obtener el valor x para el input feature y la
     clase.
     Aproxima las probabilidades por distribuciones normales.
 ---------------------------------------------------------------------------- */
-double prob(double x,int feature,int clase)  {
+double prob(double x,int feature,int clase) {
 
-  double mean = media[clase][feature];
-  double variance = varianza[clase][feature];
-  double prob = dp_nomal(x,mean,variance);
-
-  return prob;
+  int nb = floor((x - vmin[feature]) / ((vmax[feature] - vmin[feature]) / (double)N_BINS));
+  return pbin[clase][feature][nb];
 }
 
 /* ---------------------------------------------------------------------------
@@ -301,9 +300,7 @@ int output(double *input){
 
     /* agrega la probabilidad a priori de la clase */
     /*COMPLETAR*/
-    prob_de_clase += log(size[k] / (double)N_TOTAL);
-
-    //printf("\n%d - %d", size[k],N_TOTAL);
+    prob_de_clase += log(size[k]/(double)N_TOTAL);
 
     /* guarda la clase con prob maxima */
     if (prob_de_clase>=max_prob){
@@ -364,10 +361,13 @@ int train(char *filename){
   double train_error,valid_error,test_error;
   FILE *salida,*fpredic;
 
+  int bin;
+  double v;
+
   /*Asigno todos los patrones del .data como entrenamiento porque este metodo
   no requiere validacion*/
-  N_TOTAL=PTOT;
-  /*N_TOTAL=PR; si hay validacion*/
+  /* N_TOTAL=PTOT; --> si no hay validacion*/
+  N_TOTAL=PR;
   for(k=0;k<PTOT;k++) seq[k]=k;  /* inicializacion del indice de acceso a
                                     los datos */
 
@@ -378,43 +378,50 @@ int train(char *filename){
     shuffle(PTOT);
   }
 
-
   /*Calcular probabilidad intrinseca de cada clase*/
 
   /* Calculo la cantidad de datos en cada clase */
   for(k = 0; k < N_TOTAL; k++) {
-      clase = data[k][N_IN];
+      clase = data[seq[k]][N_IN];
       size[clase]++;
   }
 
-  /*Calcular media y desv.est. por clase y cada atributo*/
+  /* Calculo el valor minimo y maximo de cada atributo */
+  /* Inicializo con la primer fila del archivo .data   */
+  memcpy(vmin, data[0], N_IN * sizeof(double));
+  memcpy(vmax, data[0], N_IN * sizeof(double));
 
-  /* Calculo la media de todos los features */
-  for(i = 0; i < N_IN; i++) {
-      for(k = 0; k < N_TOTAL; k++) {
-          clase = data[k][N_IN];
-          media[clase][i] += data[k][i];
-      }
-  }
-  /* Divido por la cantidad de elementos de cada clase */
-  for(i = 0; i < N_Class; i++) {
+  for(i = 0; i < PTOT; i++) {
       for(k = 0; k < N_IN; k++) {
-          media[i][k] /=  size[i];
+          clase = data[i][N_IN];
+          v = data[i][k];
+
+          if(v < vmin[k])
+            vmin[k] = v;
+          else if(v > vmax[k])
+            vmax[k] = v;
       }
   }
 
-  /* Varianza */
-  for(i = 0; i < N_IN; i++) {
-      for(k = 0; k < N_TOTAL; k++) {
-          clase = data[k][N_IN];
-          varianza[clase][i] += pow(data[k][i] - media[clase][i], 2);
-      }
-  }
+  /* Calculo la probabilidad de los bins  */
+  for(i = 0; i < N_TOTAL; i++) {
+      clase = data[seq[i]][N_IN];
 
-  /* Divido por la cantidad de elementos de cada clase */
-  for(i = 0; i < N_Class; i++) {
       for(k = 0; k < N_IN; k++) {
-          varianza[i][k] /=  size[i];
+          bin = floor((data[seq[i]][k] - vmin[k]) /
+                      ((vmax[k] - vmin[k]) / (double)N_BINS));
+
+          pbin[clase][k][bin]++;
+      }
+  }
+
+  /* Corrección a la estimación de probabilidades  */
+  for(i = 0; i < N_Class; i++) {
+      for(j = 0; j < N_IN; j++) {
+          for(k = 0; k < N_BINS; k++) {
+              pbin[i][j][k]++;
+              pbin[i][j][k] /= (size[i] + N_BINS);
+        }
       }
   }
 
