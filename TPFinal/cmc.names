@@ -1,0 +1,11 @@
+0,1.
+|
+Wife's age:                     continuous.|(numerical)
+Wife's education:               1,2,3,4.|(categorical)      1=low, 2, 3, 4=high
+Husband's education:            1,2,3,4.|(categorical)      1=low, 2, 3, 4=high
+Number of children ever born:   continuous.|(numerical)
+Wife's religion:                0,1.|(binary)           0=Non-Islam, 1=Islam
+Wife's now working?:            0,1.|(binary)           0=Yes, 1=No
+Husband's occupation:           1,2,3,4.|(categorical)      1, 2, 3, 4
+Standard-of-living index:       1,2,3,4.|(categorical)      1=low, 2, 3, 4=high
+Media exposure:                 0,1.|(binary)           0=Good, 1=Not good
