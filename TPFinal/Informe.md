@@ -18,7 +18,7 @@ puede encontrar [aquí][libsvm-git].
 Ejercicio 1
 ===========
 
-Contando con los métodos _Naive-Bayes_ (con gaussianas) y Arboles de decisión (_C4.5_) de previos TPs y _SVM_ con un kernel lineal ya está dado, solo me faltaba determinar que kernel no lineal utilizar para el dataset dado.
+Contando con los métodos _Naive-Bayes_ (con gaussianas) y _Arboles de decisión_ de previos TPs y _SVM_ con un kernel lineal ya está dado, solo me faltaba determinar que kernel no lineal utilizar para el dataset dado.
 
 #### Eligiendo el kernel no lineal
 
