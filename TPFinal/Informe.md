@@ -4,7 +4,7 @@
 
 * **libsvm** para el método de _Support Vector Machine_, su implementación se
 puede encontrar [aquí][libsvm-git].  
-* **scikit-learn** librería de python requerida para la función [StratifiedKFold][kfold] usada en [sets.py](dir) para dividir el conjunto de entrenamiento en 10 subconjuntos, respetando la proporción original de puntos de cada clase.
+* **scikit-learn** librería de python requerida para la función [StratifiedKFold][kfold] usada en [sets.py][setspy] para dividir el conjunto de entrenamiento en 10 subconjuntos, respetando la proporción original de puntos de cada clase.
 * **Rscript** programa de la suit de R.
 * **bash**
 
@@ -107,7 +107,7 @@ Además por los resultados del _ejercicio 2_ tendría garantizado que existe una
 
 [libsvm-git]: https://github.com/cjlin1/libsvm
 [kfold]: http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedKFold.html#sklearn.cross_validation.StratifiedKFold
-[setspy]: https://github.com/ljfigueroa/Aprendizaje-Automatizado/blob/master/TPFinal/sets.py
+[setspy]: sets.py
 [checkdatapy]: https://github.com/ljfigueroa/Aprendizaje-Automatizado/blob/master/TPFinal/checkdata.py
 [genSets]: https://github.com/ljfigueroa/Aprendizaje-Automatizado/blob/master/TPFinal/genSets.sh
 [rbfsc]: https://github.com/ljfigueroa/Aprendizaje-Automatizado/blob/master/TPFinal/rbf-cross-validation.sh
