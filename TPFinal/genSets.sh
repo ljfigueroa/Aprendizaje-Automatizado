@@ -1,6 +1,5 @@
 #!/bin/bash
 
-libsvm_dir=~/Documentos/GIT/libsvm
 
 original=cmc.original.data               # C4.5 and Naive-Bayed formated data.
 shuffled_data=cmc.original.shuf.data
@@ -30,6 +29,6 @@ for i in `seq 0 9`; do
 	awk -F, '{printf("%d ",$NF);for(i=1;i<NF;i++){printf "%d:%f ",i,$i}; printf "\n"}' "$original.test" > "$formated.test.nonscaled"
 	./svm-scale -l 0 -u 1 -s scaling_parameters "$formated.data.nonscaled" > "$formated.data"
 	./svm-scale -r scaling_parameters "$formated.test.nonscaled" > "$formated.test"
-	python $libsvm_dir/tools/checkdata.py "$formated.data"
-	python $libsvm_dir/tools/checkdata.py "$formated.test"
+	python checkdata.py "$formated.data"
+	python checkdata.py "$formated.test"
 done
