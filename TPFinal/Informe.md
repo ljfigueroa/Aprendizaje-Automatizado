@@ -107,8 +107,8 @@ Además por los resultados del _ejercicio 2_ tendría garantizado que existe una
 
 [libsvm-git]: https://github.com/cjlin1/libsvm
 [kfold]: http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedKFold.html#sklearn.cross_validation.StratifiedKFold
-[setspy]: sets.py
-[checkdatapy]: a
-[genSets]: a
-[rbfsc]: a
-[genTabla]: a
+[setspy]: https://github.com/ljfigueroa/Aprendizaje-Automatizado/blob/master/TPFinal/sets.py
+[checkdatapy]: https://github.com/ljfigueroa/Aprendizaje-Automatizado/blob/master/TPFinal/checkdata.py
+[genSets]: https://github.com/ljfigueroa/Aprendizaje-Automatizado/blob/master/TPFinal/genSets.sh
+[rbfsc]: https://github.com/ljfigueroa/Aprendizaje-Automatizado/blob/master/TPFinal/rbf-cross-validation.sh
+[genTabla]: https://github.com/ljfigueroa/Aprendizaje-Automatizado/blob/master/TPFinal/genTabla.sh
