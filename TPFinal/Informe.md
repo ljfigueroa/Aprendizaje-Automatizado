@@ -107,7 +107,7 @@ Además por los resultados del _ejercicio 2_ tendría garantizado que existe una
 
 [libsvm-git]: https://github.com/cjlin1/libsvm
 [kfold]: http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedKFold.html#sklearn.cross_validation.StratifiedKFold
-[setspy]: a
+[setspy]: sets.py
 [checkdatapy]: a
 [genSets]: a
 [rbfsc]: a
