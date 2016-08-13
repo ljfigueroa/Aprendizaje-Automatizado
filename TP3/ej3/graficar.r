@@ -1,0 +1,13 @@
+pdf("dos_elipses - Bayes con Gaussianas")
+x <- read.csv("dos_elipses.predic", header=FALSE , sep='\t')
+plot(x[,1],x[,2],col=x[,3]+2,main='Gráfica de dos_elipses.predic - Bayes con Gaussianas',xlab='input2',ylab='input2')
+dev.off()
+pdf("dos_elipses - Red Neuronal")
+x <- read.csv("RedNeuronal-discretizado.predic" , header=FALSE , sep=' ')
+plot(x[,1],x[,2],col=x[,3]+2,main='Gráfica de dos_elipses.predic - Red Neuronal',xlab='input1',ylab='input2')
+dev.off()
+x <- read.csv("ejC.predic", header=FALSE , sep='\t')
+pdf("ejC - Bayes con Gaussianas")
+plot(x[,1],x[,2],col=x[,3]+2,main='Gráfica de ejC.predic - Bayes con Gaussianas',xlab='input1',ylab='input2')
+dev.off()
+
